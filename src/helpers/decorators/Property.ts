@@ -9,18 +9,19 @@ export function Property(customType?: any) {
     // ensure data uniqueness
     const propertiesSymbol = Symbol.for("model:properties");
 
-    return (target: any, property: any) => {
+    return (target: Object, property: string) => {
         const type = customType ? customType : Reflect.getMetadata("design:type", target, property);
         const existingParameters = Reflect.getMetadata(propertiesSymbol, target);
 
         if (!existingParameters) {
             Reflect.defineMetadata(propertiesSymbol, {
-                [property]: type,
+                // Workaround for this issue: https://github.com/microsoft/TypeScript/issues/4521
+                [property]: type || Object,
             }, target);
         } else {
             Reflect.defineMetadata(propertiesSymbol, {
                 ...existingParameters,
-                [property]: type,
+                [property]: type || Object,
             }, target);
         }
     };
