@@ -21,11 +21,13 @@ export abstract class AbstractModel {
         }
 
         for (const key in props) {
-            if (properties.hasOwnProperty(key)) {
-                const value = props[key];
-                const type = properties[key];
+            const camelCaseKey = this.snakeCaseToCamelCase(key);
 
-                Object.defineProperty(this, key, {
+            if (properties.hasOwnProperty(camelCaseKey)) {
+                const value = props[key];
+                const type = properties[camelCaseKey];
+
+                Object.defineProperty(this, camelCaseKey, {
                     value: this.transformValue(value, type),
                     configurable: true,
                     enumerable: true,
@@ -61,5 +63,18 @@ export abstract class AbstractModel {
         }
 
         return new type(value);
+    }
+
+    /**
+     * Convert a snake_case string to camelCase
+     *
+     * @param value The string to convert
+     *
+     * @returns The string converted to camelCase
+     */
+    private snakeCaseToCamelCase(value: string): string {
+        return value
+            .replace(/(?<=_)./g, (selected) => selected.toUpperCase())
+            .replace(/_/g, "");
     }
 }
