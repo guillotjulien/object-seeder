@@ -1,0 +1,24 @@
+*.log
+npm-debug.log*
+
+# Coverage directory
+coverage
+
+# Dependency directories
+node_modules
+
+# npm package lock
+package-lock.json
+
+# project files
+src
+test
+examples
+.drone.yml
+.editorconfig
+.eslintignore
+.eslintrc
+.gitignore
+.prettierrc
+jest.config.json
+tsconfig.json

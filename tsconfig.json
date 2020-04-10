@@ -11,5 +11,8 @@
         "moduleResolution": "node",
         "sourceMap": true,
         "outDir": "dist"
-    }
+    },
+    "exclude": [
+        "dist"
+    ]
 }

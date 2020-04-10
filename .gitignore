@@ -1,1 +1,11 @@
-node_modules/
+# Coverage directory
+coverage
+
+# Dependency directories
+node_modules
+
+# Artifacts
+docs
+dist
+*.log
+npm-debug.log*
