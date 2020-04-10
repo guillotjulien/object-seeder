@@ -2,7 +2,7 @@
 > Typescript utils for hassle free automatic object seeding. No more static mapping to maintain!
 
 [![npm](https://img.shields.io/npm/v/object-seeder)](https://www.npmjs.com/package/object-seeder)
-[![Build Status](https://drone.nhvfc.xyz/api/badges/guillotjulien/typescript-object-population/status.svg)](https://drone.nhvfc.xyz/guillotjulien/typescript-object-population)
+[![Build](https://img.shields.io/drone/build/guillotjulien/object-seeder?server=https%3A%2F%2Fdrone.nhvfc.xyz)](https://drone.nhvfc.xyz/guillotjulien/typescript-object-population)
 [![DeepScan grade](https://deepscan.io/api/teams/8551/projects/10758/branches/153036/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=8551&pid=10758&bid=153036)
 
 Object Seeder is a set of two utils aiming to make model seeding efficient and easy again using the power of Typescript.
