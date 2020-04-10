@@ -116,10 +116,10 @@ const user = new User({
 
 ## TODO
 
-- [] Optionnal automatic conversion from snake_Case to camelCase
-- [] Provide a custom name as a parameter for customized seeding
-- [] Replace AbstractModel by another decorator
-- [] Add custom example (select options based on model properties)
+- [ ] Optionnal automatic conversion from snake_Case to camelCase
+- [ ] Provide a custom name as a parameter for customized seeding
+- [ ] Replace AbstractModel by another decorator
+- [ ] Add custom example (select options based on model properties)
 
 ## Contributing
 
@@ -131,7 +131,7 @@ Make sure to follow these step, or your contribution might be rejected.
 3. If your changes impact the public API, make sure to add more tests and run the old ones
 5. Commit your changes (git commit -am 'Add some fooBar')
 4. Push to the branch (git push origin feature/fooBar)
-5. Open a new Pull Request
+5. Open a new Pull Request following the pull request template
 
 ## License
 
