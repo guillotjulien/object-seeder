@@ -1,32 +1,30 @@
 import 'reflect-metadata';
 
+export const INVALID_TYPE_ERROR = 'Provided data must be of object type.';
+export const UNDEFINED_TYPE_ERROR = 'Cannot convert value to undefined type.';
+
 /**
  * Base model to extends when creating a new model. This class provides the
  * mecanisme for automatic object seeding.
  */
-export abstract class AbstractModel {
+export abstract class AbstractModel<T> {
     /**
      * Populate model with data
      *
      * @param data Data to populate model with
+     *
+     * @throws When provided data is not an object
      */
-    constructor(data?: any) {
+    constructor(data?: RecursivePartial<T>) {
         const properties = this.getProperties();
 
-        // Nothing to do if there is no data
-        if (!data) {
+        // Nothing to do if there is no data or no properties defined
+        if (!data || !properties) {
             return;
         }
 
-        // TODO: Little util for object detection, otherwise, we could inject array, date, etc
-        if (typeof data !== 'object') {
-            throw new Error('Provided data must be of object type.');
-        }
-
-        if (!properties) {
-            throw new Error(
-                'Model without properties cannot be automatically populated. Did you forget to use @Property()?',
-            );
+        if (!this.isObject(data)) {
+            throw new Error(INVALID_TYPE_ERROR);
         }
 
         for (const key in data) {
@@ -53,7 +51,7 @@ export abstract class AbstractModel {
      * @returns An array containing all properties with their type.
      */
     private getProperties(): any {
-        return Reflect.getMetadata(Symbol.for('model:properties'), this);
+        return Reflect.getMetadata('model:properties', this);
     }
 
     /**
@@ -73,11 +71,11 @@ export abstract class AbstractModel {
 
         // We want to keep falsy values
         if (value === undefined || value === null) {
-            return null;
+            return;
         }
 
         if (!type) {
-            throw new Error('Cannot convert value to undefined type.');
+            throw new Error(UNDEFINED_TYPE_ERROR);
         }
 
         if (primitiveTypes.indexOf(type.name) >= 0) {
@@ -88,4 +86,15 @@ export abstract class AbstractModel {
 
         return new type(value);
     }
+
+    private isObject(value: any): boolean {
+        return typeof value === 'object' &&
+            !!value &&
+            !Array.isArray(value) &&
+            Object.prototype.toString.call(value) === '[object Object]';
+    }
 }
+
+type RecursivePartial<T> = {
+    [P in keyof T]?: RecursivePartial<T[P]>;
+};

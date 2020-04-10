@@ -26,16 +26,24 @@ export function Property(): Function {
         const existingParameters = Reflect.getMetadata('model:properties', target);
 
         if (!existingParameters) {
-            Reflect.defineMetadata('model:properties', {
-                // Workaround for this issue: https://github.com/microsoft/TypeScript/issues/4521
-                [property]: type || Object,
-            }, target);
+            Reflect.defineMetadata(
+                'model:properties',
+                {
+                    // Workaround for this issue: https://github.com/microsoft/TypeScript/issues/4521
+                    [property]: type || Object,
+                },
+                target,
+            );
         } else {
             // Update existing metadata
-            Reflect.defineMetadata('model:properties', {
-                ...existingParameters,
-                [property]: type || Object,
-            }, target);
+            Reflect.defineMetadata(
+                'model:properties',
+                {
+                    ...existingParameters,
+                    [property]: type || Object,
+                },
+                target,
+            );
         }
     };
 }
