@@ -1,7 +1,7 @@
 {
     "name": "object-seeder",
     "version": "1.0.3",
-    "description": "A tiny util with no dependency for automatic object seeding",
+    "description": "Tiny utils for hassle free automatic object seeding",
     "author": "Julien Guillot",
     "license": "MIT",
     "types": "dist/index.d.ts",
