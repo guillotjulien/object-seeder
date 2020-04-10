@@ -14,12 +14,11 @@ package-lock.json
 src
 test
 examples
-CHANGELOG.md
 .drone.yml
 .editorconfig
 .eslintignore
 .eslintrc
 .gitignore
 .prettierrc
-jest.config.js
+jest.config.json
 tsconfig.json

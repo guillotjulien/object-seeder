@@ -88,10 +88,12 @@ export abstract class AbstractModel<T> {
     }
 
     private isObject(value: any): boolean {
-        return typeof value === 'object' &&
+        return (
+            typeof value === 'object' &&
             !!value &&
             !Array.isArray(value) &&
-            Object.prototype.toString.call(value) === '[object Object]';
+            Object.prototype.toString.call(value) === '[object Object]'
+        );
     }
 }
 

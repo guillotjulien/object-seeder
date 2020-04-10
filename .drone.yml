@@ -19,6 +19,6 @@ steps:
           password:
               from_secret: npm_password
           email: nhvfc@tutanota.com
-          when:
-              branch:
-                  - master
+      when:
+          branch:
+              - master
