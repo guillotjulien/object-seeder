@@ -22,3 +22,5 @@ steps:
       when:
           branch:
               - master
+          event:
+              - push
