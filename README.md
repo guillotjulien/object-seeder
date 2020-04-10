@@ -32,7 +32,7 @@ export class User extends AbstractModel<User> {
 
 And no longer like this:
 ``` typescript
-export class User extends AbstractModel<User> {
+export class User {
     public id: number;
 
     public firstName: string;
@@ -58,12 +58,15 @@ export class User extends AbstractModel<User> {
 ## Installation
 
 1. Install the npm package
+
 `npm install object-seeder`
 
 2. Install `reflect-metadata` shim
+
 `npm install reflect-metadata`
 
 3. TypeScript configuration
+
 Make sure you have the following settings enabled in your `tsconfig.json`
 
 ``` json
@@ -128,6 +131,7 @@ const user = new User({
 ## Contributing
 
 Interested in contributing features and fixes? All contributions are welcome :smiley:
+
 Make sure to follow these step, or your contribution might be rejected.
 
 1. Fork it (https://github.com/yourname/yourproject/fork)
