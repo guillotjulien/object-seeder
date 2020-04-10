@@ -3,22 +3,22 @@ name: default
 
 steps:
     - name: test
-        image: node:lts-alpine
-        commands:
-            - npm ci
-            - npm run lint
-            - npm run test
+      image: node:lts-alpine
+      commands:
+          - npm ci
+          - npm run lint
+          - npm run test
 
-    # It should not publish if first steps doesn't work!
+      # It should not publish if first steps doesn't work!
     - name: npm
-        image: plugins/npm
-        environment:
-            NODE_ENV: production
-        settings:
-            username: nhvfc
-            password:
-                from_secret: npm_password
-            email: nhvfc@tutanota.com
-        when:
-            branch:
-                - master
+      image: plugins/npm
+      environment:
+          NODE_ENV: production
+      settings:
+          username: nhvfc
+          password:
+              from_secret: npm_password
+              email: nhvfc@tutanota.com
+          when:
+              branch:
+                  - master
