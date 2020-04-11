@@ -26,13 +26,15 @@
         "lint": "eslint 'src/**/*.ts'",
         "lint:fix": "eslint --fix 'src/**/*.ts'",
         "test": "jest --detectOpenHandles",
-        "test:coverage": "jest --coverage --detectOpenHandles"
+        "test:coverage": "jest --coverage --detectOpenHandles",
+        "test:benchmark": "ts-node test/benchmark.ts"
     },
     "dependencies": {
         "reflect-metadata": "^0.1.13"
     },
     "devDependencies": {
         "@types/jest": "^25.2.1",
+        "@types/node": "^13.11.1",
         "@typescript-eslint/eslint-plugin": "^2.27.0",
         "@typescript-eslint/parser": "^2.27.0",
         "eslint": "^6.8.0",

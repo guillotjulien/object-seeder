@@ -46,11 +46,9 @@ export abstract class AbstractModel<T> {
      * Get all the properties and their type. This only works for properties
      * that have been decorated with the @Property() decorator.
      *
-     * FIXME: replace any by interface
-     *
      * @returns An array containing all properties with their type.
      */
-    private getProperties(): any {
+    private getProperties(): ObjectKeyMetadata {
         return Reflect.getMetadata('model:properties', this);
     }
 
@@ -99,4 +97,8 @@ export abstract class AbstractModel<T> {
 
 type RecursivePartial<T> = {
     [P in keyof T]?: RecursivePartial<T[P]>;
+};
+
+type ObjectKeyMetadata = {
+    [key: string]: Function;
 };

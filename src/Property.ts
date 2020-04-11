@@ -20,17 +20,19 @@ import 'reflect-metadata';
  *
  * @returns An instance of the decorator
  */
-export function Property(): Function {
+export function Property(typeFunction?: () => Function): Function {
     return (target: Record<string, any>, property: string): void => {
-        const type = Reflect.getMetadata('design:type', target, property);
+        const reflectedType = Reflect.getMetadata('design:type', target, property);
         const existingParameters = Reflect.getMetadata('model:properties', target);
+
+        // console.log(reflectedType, typeof reflectedType, typeFunction ? typeFunction() : undefined);
 
         if (!existingParameters) {
             Reflect.defineMetadata(
                 'model:properties',
                 {
                     // Workaround for this issue: https://github.com/microsoft/TypeScript/issues/4521
-                    [property]: type || Object,
+                    [property]: reflectedType || Object,
                 },
                 target,
             );
@@ -40,7 +42,7 @@ export function Property(): Function {
                 'model:properties',
                 {
                     ...existingParameters,
-                    [property]: type || Object,
+                    [property]: reflectedType || Object,
                 },
                 target,
             );
