@@ -2,7 +2,7 @@ import { performance } from 'perf_hooks';
 import { TestTypes } from './fixtures/TestTypes';
 
 /**
- * Execute callback N times and mesure execution duration
+ * Execute callback N times and measure execution duration
  *
  * @param times Number of repetitions
  * @param title Benchmark title

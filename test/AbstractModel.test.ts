@@ -1,10 +1,11 @@
 /* eslint @typescript-eslint/ban-ts-ignore: 0 */
 
+import { INVALID_TYPE_ERROR, AbstractModel } from '../src/AbstractModel';
+import { Property } from '../src';
+
 import { SomeClass } from './fixtures/SomeClass';
 import { TestTypes } from './fixtures/TestTypes';
 import { NoDecoratorClass } from './fixtures/NoDecoratorClass';
-import { INVALID_TYPE_ERROR, AbstractModel } from '../src/AbstractModel';
-import { Property } from '../src';
 
 describe('AbstractModel', () => {
     describe('constructor', () => {
