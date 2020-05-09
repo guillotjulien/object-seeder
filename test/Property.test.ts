@@ -1,6 +1,8 @@
 import { PARAMETER_KEY, Property } from '../src';
 import { User } from './fixtures/circular-reference/user';
 import { UserInfo } from './fixtures/circular-reference/user-info';
+import { UserInfoTypeFunction } from './fixtures/circular-reference/user-info-type-function';
+import { UserTypeFunction } from './fixtures/circular-reference/user-type-function';
 
 describe('Property decorator', () => {
     it('Should not return metadata matching key "PARAMETER_KEY" given a non decorated class', () => {
@@ -72,5 +74,13 @@ describe('Property decorator', () => {
             id: Number,
             userInfo: UserInfo,
         });
+    });
+
+    it('Should reflect provided type given a decorated class property with a type function', () => {
+        const userInfoProperties = Reflect.getMetadata(PARAMETER_KEY, new UserInfoTypeFunction());
+        const userProperties = Reflect.getMetadata(PARAMETER_KEY, new UserTypeFunction());
+
+        expect(userInfoProperties.user()).toEqual(UserTypeFunction);
+        expect(userProperties.userInfo()).toEqual(UserInfoTypeFunction);
     });
 });

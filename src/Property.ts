@@ -9,8 +9,6 @@ export const PARAMETER_KEY = 'model:properties';
  * This is the @Property() decorator factory. This decorator, used on a class property,
  * retrieve the name and type of the property and add them to the class metadata.
  *
- * FIXME: Explain the Object workaround and what it can imply
- *
  * @see {@link https://github.com/microsoft/TypeScript/issues/4521|Issue} for further information.
  *
  * @example
@@ -29,9 +27,9 @@ export const PARAMETER_KEY = 'model:properties';
  *
  * @returns An instance of the decorator
  */
-export function Property(typeFunction?: () => Function): Function {
+export function Property(type?: () => Function): Function {
     return (target: Record<string, any>, property: string): void => {
-        const reflectedType = Reflect.getMetadata('design:type', target, property);
+        const reflectedType = type || Reflect.getMetadata('design:type', target, property);
         const existingParameters = Reflect.getMetadata(PARAMETER_KEY, target) || {};
 
         Reflect.defineMetadata(

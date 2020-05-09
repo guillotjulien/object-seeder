@@ -1,7 +1,10 @@
-import { SomeClass } from "./fixtures/SomeClass";
-import { TestTypes } from "./fixtures/TestTypes";
-import { NoDecoratorClass } from "./fixtures/NoDecoratorClass";
-import { INVALID_TYPE_ERROR } from "../src/AbstractModel";
+/* eslint @typescript-eslint/ban-ts-ignore: 0 */
+
+import { SomeClass } from './fixtures/SomeClass';
+import { TestTypes } from './fixtures/TestTypes';
+import { NoDecoratorClass } from './fixtures/NoDecoratorClass';
+import { INVALID_TYPE_ERROR, AbstractModel } from '../src/AbstractModel';
+import { Property } from '../src';
 
 describe('AbstractModel', () => {
     describe('constructor', () => {
@@ -79,10 +82,20 @@ describe('AbstractModel', () => {
             expect(testInstance.someClass.name).toEqual('some class');
         });
 
-        // TODO: Add test to see how it react when trying to populate an unknow sub child
-
         it('Should do nothing when there is no defined property', () => {
             expect(new NoDecoratorClass({})).toEqual({});
+        });
+
+        it('Should not add a non defined property to the class provided a non defined property', () => {
+            class TestNonDefined extends AbstractModel<TestNonDefined> {
+                @Property()
+                public id: number;
+            }
+
+            // @ts-ignore Bypassing partial to test injection of non required value
+            const test = new TestNonDefined({ id: 1, unknown: 'I should not be seeded' });
+
+            expect({ ...test }).toEqual({ id: 1 });
         });
 
         it('Should throw an error if provided data is not an object', () => {
