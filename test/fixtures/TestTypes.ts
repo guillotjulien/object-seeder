@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { AbstractModel } from '../../src/AbstractModel';
 import { SomeClass } from './SomeClass';
 import { Property } from '../../src/Property';

@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { Property } from '../../../src';
 import { UserInfo } from './user-info';
 

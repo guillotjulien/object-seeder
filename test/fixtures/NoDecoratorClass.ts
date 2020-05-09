@@ -1,4 +1,6 @@
-import { AbstractModel } from "../../src/AbstractModel";
+/* istanbul ignore file */
+
+import { AbstractModel } from '../../src/AbstractModel';
 
 export class NoDecoratorClass extends AbstractModel<NoDecoratorClass> {
     public id: number;
