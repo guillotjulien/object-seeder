@@ -1,11 +1,13 @@
 import 'reflect-metadata';
 
+import { PARAMETER_KEY } from './Property';
+
 export const INVALID_TYPE_ERROR = 'Provided data must be of object type.';
 export const UNDEFINED_TYPE_ERROR = 'Cannot convert value to undefined type.';
 
 /**
  * Base model to extends when creating a new model. This class provides the
- * mecanisme for automatic object seeding.
+ * mechanism for automatic object seeding.
  */
 export abstract class AbstractModel<T> {
     /**
@@ -49,7 +51,7 @@ export abstract class AbstractModel<T> {
      * @returns An array containing all properties with their type.
      */
     private getProperties(): ObjectKeyMetadata {
-        return Reflect.getMetadata('model:properties', this);
+        return Reflect.getMetadata(PARAMETER_KEY, this);
     }
 
     /**
