@@ -20,7 +20,7 @@ export class TestTypes extends AbstractModel<TestTypes> {
     @Property()
     public date: Date;
 
-    @Property()
+    @Property(() => SomeClass)
     public someClasses: SomeClass[];
 
     @Property()

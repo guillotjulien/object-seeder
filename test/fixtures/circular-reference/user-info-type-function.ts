@@ -1,9 +1,9 @@
 /* istanbul ignore file */
 
-import { Property } from '../../../src';
+import { Property, AbstractModel } from '../../../src';
 import { UserTypeFunction } from './user-type-function';
 
-export class UserInfoTypeFunction {
+export class UserInfoTypeFunction extends AbstractModel<UserInfoTypeFunction> {
     @Property()
     public id: number;
 

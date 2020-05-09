@@ -66,7 +66,8 @@ export abstract class AbstractModel<T> {
      *
      * @returns converted value
      */
-    private transformValue(value: any, type: any): any {
+    private transformValue(value: any, type: Type): any {
+        let { reflectedType, runtimeType } = type;
         const primitiveTypes = ['Number', 'String', 'Boolean'];
 
         // We want to keep falsy values
@@ -78,13 +79,28 @@ export abstract class AbstractModel<T> {
             throw new Error(UNDEFINED_TYPE_ERROR);
         }
 
-        if (primitiveTypes.indexOf(type.name) >= 0) {
-            return type(value);
-        } else if (type.name === 'Array' && Array.isArray(value)) {
+        if (primitiveTypes.indexOf(reflectedType.name) >= 0) {
+            return reflectedType(value);
+        }
+
+        if (reflectedType.name === 'Array' && Array.isArray(value)) {
+            if (runtimeType) {
+                reflectedType = runtimeType();
+
+                return value.map((element) => new reflectedType(element));
+            }
+
+            // Fallback, unwanted properties can be included in the array
             return Array.from(value);
         }
 
-        return new type(value);
+        // When type was provided as an arrow function, the type is obtained at
+        // runtime vs at initialization.
+        if (runtimeType && !runtimeType.name) {
+            reflectedType = runtimeType();
+        }
+
+        return new reflectedType(value);
     }
 
     private isObject(value: any): boolean {
@@ -102,5 +118,11 @@ type RecursivePartial<T> = {
 };
 
 type ObjectKeyMetadata = {
-    [key: string]: Function;
+    [key: string]: Type;
 };
+
+interface Type {
+    reflectedType: any;
+
+    runtimeType: any;
+}

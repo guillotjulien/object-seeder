@@ -40,15 +40,18 @@ export const PARAMETER_KEY = 'model:properties';
  */
 export function Property(type?: () => Function): Function {
     return (target: Record<string, any>, property: string): void => {
-        const reflectedType = type || Reflect.getMetadata('design:type', target, property);
+        const reflectedType = Reflect.getMetadata('design:type', target, property);
         const existingParameters = Reflect.getMetadata(PARAMETER_KEY, target) || {};
 
         Reflect.defineMetadata(
             PARAMETER_KEY,
             {
                 ...existingParameters,
-                // Workaround for this issue: https://github.com/microsoft/TypeScript/issues/4521
-                [property]: reflectedType || Object,
+                [property]: {
+                    // Workaround for this issue: https://github.com/microsoft/TypeScript/issues/4521
+                    reflectedType: reflectedType || Object,
+                    runtimeType: type,
+                },
             },
             target,
         );

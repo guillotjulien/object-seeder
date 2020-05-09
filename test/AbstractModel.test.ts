@@ -6,6 +6,8 @@ import { Property } from '../src';
 import { SomeClass } from './fixtures/SomeClass';
 import { TestTypes } from './fixtures/TestTypes';
 import { NoDecoratorClass } from './fixtures/NoDecoratorClass';
+import { UserTypeFunction } from './fixtures/circular-reference/user-type-function';
+import { UserInfoTypeFunction } from './fixtures/circular-reference/user-info-type-function';
 
 describe('AbstractModel', () => {
     describe('constructor', () => {
@@ -78,9 +80,13 @@ describe('AbstractModel', () => {
                 }),
             });
 
-            expect(testInstance.number).toEqual(1);
-            expect(testInstance.someClass.id).toEqual(2);
-            expect(testInstance.someClass.name).toEqual('some class');
+            expect(testInstance).toEqual({
+                number: 1,
+                someClass: new SomeClass({
+                    id: 2,
+                    name: 'some class',
+                }),
+            });
         });
 
         it('Should do nothing when there is no defined property', () => {
@@ -108,6 +114,53 @@ describe('AbstractModel', () => {
 
             // @ts-ignore Testing values that can be used at runtime
             expect(() => new SomeClass(new Date())).toThrowError(INVALID_TYPE_ERROR);
+        });
+
+        it('Should create a new instance of child class given a decorated property with a type function', () => {
+            const user = new UserTypeFunction({
+                id: 1,
+                userInfo: {
+                    id: 1,
+                },
+            });
+
+            expect(user.userInfo).toBeInstanceOf(UserInfoTypeFunction);
+        });
+
+        it('Should create an array of class instance given a decorated property with a type function', () => {
+            const instance = new TestTypes({
+                someClasses: [
+                    {
+                        id: 1,
+                        name: 'some class 1',
+                    },
+                    {
+                        id: 2,
+                        name: 'some class 2',
+                    },
+                ],
+            });
+
+            expect(instance.someClasses[0]).toBeInstanceOf(SomeClass);
+        });
+
+        it('Should create an array of class instance with only expected properties given a decorated property with a type function', () => {
+            const instance = new TestTypes({
+                someClasses: [
+                    {
+                        id: 1,
+                        name: 'some class 1',
+                        // @ts-ignore
+                        invalid: 'test',
+                    },
+                    {
+                        id: 2,
+                        name: 'some class 2',
+                    },
+                ],
+            });
+
+            expect(instance.someClasses[0].invalid).toBeUndefined();
         });
     });
 });

@@ -35,11 +35,26 @@ describe('Property decorator', () => {
         }
 
         expect(Reflect.getMetadata(PARAMETER_KEY, new TestPrimitive())).toEqual({
-            boolean: Boolean,
-            number: Number,
-            bigInt: BigInt,
-            string: String,
-            symbol: Symbol,
+            boolean: {
+                reflectedType: Boolean,
+                type: undefined,
+            },
+            number: {
+                reflectedType: Number,
+                type: undefined,
+            },
+            bigInt: {
+                reflectedType: BigInt,
+                type: undefined,
+            },
+            string: {
+                reflectedType: String,
+                type: undefined,
+            },
+            symbol: {
+                reflectedType: Symbol,
+                type: undefined,
+            },
         });
     });
 
@@ -54,7 +69,10 @@ describe('Property decorator', () => {
         }
 
         expect(Reflect.getMetadata(PARAMETER_KEY, new TestCustomType())).toEqual({
-            customType: CustomType,
+            customType: {
+                reflectedType: CustomType,
+                type: undefined,
+            },
         });
     });
 
@@ -67,13 +85,25 @@ describe('Property decorator', () => {
      */
     it('Should default to Object given a decorated class property whose type is not identifiable', () => {
         expect(Reflect.getMetadata(PARAMETER_KEY, new UserInfo())).toEqual({
-            id: Number,
-            user: Object,
+            id: {
+                reflectedType: Number,
+                type: undefined,
+            },
+            user: {
+                reflectedType: Object,
+                type: undefined,
+            },
         });
 
         expect(Reflect.getMetadata(PARAMETER_KEY, new User())).toEqual({
-            id: Number,
-            userInfo: UserInfo,
+            id: {
+                reflectedType: Number,
+                type: undefined,
+            },
+            userInfo: {
+                reflectedType: UserInfo,
+                type: undefined,
+            },
         });
     });
 
@@ -81,7 +111,14 @@ describe('Property decorator', () => {
         const userInfoProperties = Reflect.getMetadata(PARAMETER_KEY, new UserInfoTypeFunction());
         const userProperties = Reflect.getMetadata(PARAMETER_KEY, new UserTypeFunction());
 
-        expect(userInfoProperties.user()).toEqual(UserTypeFunction);
-        expect(userProperties.userInfo()).toEqual(UserInfoTypeFunction);
+        expect(userInfoProperties.user).toEqual({
+            reflectedType: UserTypeFunction,
+            runtimeType: expect.any(Function),
+        });
+
+        expect(userProperties.userInfo).toEqual({
+            reflectedType: Object,
+            runtimeType: expect.any(Function),
+        });
     });
 });
