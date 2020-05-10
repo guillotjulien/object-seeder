@@ -1,5 +1,3 @@
-import 'reflect-metadata';
-
 import { PARAMETER_KEY } from './Property';
 
 export const INVALID_TYPE_ERROR = 'Provided data must be of object type.';

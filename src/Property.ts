@@ -1,7 +1,7 @@
-import 'reflect-metadata';
-
 /**
  * Key used to register type metadata in the class instance at runtime.
+ *
+ * @internal
  */
 export const PARAMETER_KEY = 'model:properties';
 
