@@ -65,7 +65,7 @@ export abstract class AbstractModel<T> {
      * @returns converted value
      */
     private transformValue(value: any, type: Type): any {
-        let { reflectedType, runtimeType } = type;
+        let { reflectedType, providedType } = type;
         const primitiveTypes = ['Number', 'String', 'Boolean'];
 
         // We want to keep falsy values
@@ -82,8 +82,8 @@ export abstract class AbstractModel<T> {
         }
 
         if (reflectedType.name === 'Array' && Array.isArray(value)) {
-            if (runtimeType) {
-                reflectedType = runtimeType();
+            if (providedType) {
+                reflectedType = providedType();
 
                 return value.map((element) => new reflectedType(element));
             }
@@ -94,8 +94,8 @@ export abstract class AbstractModel<T> {
 
         // When type was provided as an arrow function, the type is obtained at
         // runtime vs at initialization.
-        if (runtimeType && !runtimeType.name) {
-            reflectedType = runtimeType();
+        if (providedType && !providedType.name) {
+            reflectedType = providedType();
         }
 
         return new reflectedType(value);
@@ -122,5 +122,5 @@ type ObjectKeyMetadata = {
 interface Type {
     reflectedType: any;
 
-    runtimeType: any;
+    providedType: any;
 }

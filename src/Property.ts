@@ -50,7 +50,7 @@ export function Property(type?: () => Function): Function {
                 [property]: {
                     // Workaround for this issue: https://github.com/microsoft/TypeScript/issues/4521
                     reflectedType: reflectedType || Object,
-                    runtimeType: type,
+                    providedType: type,
                 },
             },
             target,

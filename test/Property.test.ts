@@ -113,12 +113,12 @@ describe('Property decorator', () => {
 
         expect(userInfoProperties.user).toEqual({
             reflectedType: UserTypeFunction,
-            runtimeType: expect.any(Function),
+            providedType: expect.any(Function),
         });
 
         expect(userProperties.userInfo).toEqual({
             reflectedType: Object,
-            runtimeType: expect.any(Function),
+            providedType: expect.any(Function),
         });
     });
 });
