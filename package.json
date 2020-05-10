@@ -29,7 +29,7 @@
         "test:coverage": "jest --coverage --detectOpenHandles",
         "test:benchmark": "ts-node test/benchmark.ts"
     },
-    "dependencies": {
+    "peerDependencies": {
         "reflect-metadata": "^0.1.13"
     },
     "devDependencies": {

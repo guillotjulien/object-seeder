@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { performance } from 'perf_hooks';
 import { TestTypes } from './fixtures/TestTypes';
 
@@ -20,7 +22,7 @@ function bench(times: number, title: string, exec: (i: number) => void): void {
     console.log(times, 'x benchmark', title, took, 'ms', took / times, 'per item');
 }
 
-bench(1000000, 'Testing unmarshalling plain object into class', (i: number) => {
+bench(100000, 'Testing unmarshalling plain object into class', (i: number) => {
     new TestTypes({
         string: 'a',
         boolean: true,
