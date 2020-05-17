@@ -1,14 +1,14 @@
 {
     "name": "object-seeder",
-    "version": "1.0.7",
+    "version": "1.1.0",
     "description": "Tiny utils for hassle free automatic object seeding",
     "author": "Julien Guillot",
     "license": "MIT",
-    "types": "dist/types",
+    "types": "dist",
     "main": "dist/index.js",
-    "files": [
-        "dist"
-    ],
+    "exports": {
+        "./": "./dist"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/guillotjulien/object-seeder"
@@ -20,8 +20,8 @@
         "seed"
     ],
     "scripts": {
-        "build": "tsc -p tsconfig.build.json",
-        "prepare": "tsc -p tsconfig.build.json",
+        "build": "rm -r dist && tsc -p tsconfig.build.json",
+        "prepare": "rm -r dist && tsc -p tsconfig.build.json",
         "format:all": "prettier --write src/.",
         "lint": "eslint 'src/**/*.ts'",
         "lint:fix": "eslint --fix 'src/**/*.ts'",

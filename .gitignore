@@ -9,3 +9,4 @@ docs
 dist
 *.log
 npm-debug.log*
+*.tgz
