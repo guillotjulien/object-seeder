@@ -1,4 +1,4 @@
-## [Version 1.1.0](https://github.com/guillotjulien/object-seeder/releases/tag/v1.1.0) (2020-5-17)
+## Version 1.1.0 (2020-5-17)
 
 ### Major Changes
 
