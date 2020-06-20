@@ -26,6 +26,7 @@
         "lint": "eslint 'src/**/*.ts'",
         "lint:fix": "eslint --fix 'src/**/*.ts'",
         "test": "jest --detectOpenHandles",
+        "test:watch": "jest --detectOpenHandles --watchAll",
         "test:coverage": "jest --coverage --detectOpenHandles",
         "test:benchmark": "ts-node test/benchmark.ts"
     },
