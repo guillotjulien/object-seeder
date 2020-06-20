@@ -37,23 +37,28 @@ describe('Property decorator', () => {
         expect(Reflect.getMetadata(PARAMETER_KEY, new TestPrimitive())).toEqual({
             boolean: {
                 reflectedType: Boolean,
-                type: undefined,
+                options: undefined,
+                realName: 'boolean',
             },
             number: {
                 reflectedType: Number,
-                type: undefined,
+                options: undefined,
+                realName: 'number',
             },
             bigInt: {
                 reflectedType: BigInt,
-                type: undefined,
+                options: undefined,
+                realName: 'bigInt',
             },
             string: {
                 reflectedType: String,
-                type: undefined,
+                options: undefined,
+                realName: 'string',
             },
             symbol: {
                 reflectedType: Symbol,
-                type: undefined,
+                options: undefined,
+                realName: 'symbol',
             },
         });
     });
@@ -71,7 +76,9 @@ describe('Property decorator', () => {
         expect(Reflect.getMetadata(PARAMETER_KEY, new TestCustomType())).toEqual({
             customType: {
                 reflectedType: CustomType,
-                type: undefined,
+                providedType: undefined,
+                options: undefined,
+                realName: 'customType',
             },
         });
     });
@@ -87,22 +94,30 @@ describe('Property decorator', () => {
         expect(Reflect.getMetadata(PARAMETER_KEY, new UserInfo())).toEqual({
             id: {
                 reflectedType: Number,
-                type: undefined,
+                providedType: undefined,
+                options: undefined,
+                realName: 'id',
             },
             user: {
                 reflectedType: Object,
-                type: undefined,
+                providedType: undefined,
+                options: undefined,
+                realName: 'user',
             },
         });
 
         expect(Reflect.getMetadata(PARAMETER_KEY, new User())).toEqual({
             id: {
                 reflectedType: Number,
-                type: undefined,
+                providedType: undefined,
+                options: undefined,
+                realName: 'id',
             },
             userInfo: {
                 reflectedType: UserInfo,
-                type: undefined,
+                providedType: undefined,
+                options: undefined,
+                realName: 'userInfo',
             },
         });
     });
@@ -114,11 +129,15 @@ describe('Property decorator', () => {
         expect(userInfoProperties.user).toEqual({
             reflectedType: UserTypeFunction,
             providedType: expect.any(Function),
+            options: undefined,
+            realName: 'user',
         });
 
         expect(userProperties.userInfo).toEqual({
             reflectedType: Object,
             providedType: expect.any(Function),
+            options: undefined,
+            realName: 'userInfo',
         });
     });
 });

@@ -163,5 +163,23 @@ describe('AbstractModel', () => {
             // @ts-ignore Testing unexpected value
             expect(instance.someClasses[0].invalid).toBeUndefined();
         });
+
+        it('Should seed property from the key that have been specified with option name', () => {
+            class TestCustomName extends AbstractModel<TestCustomName> {
+                @Property({
+                    name: 'uuid',
+                })
+                public id: string;
+            }
+
+            const instance = new TestCustomName({
+                uuid: 'abcd-efgh-ijkl-mnop-qrst',
+            });
+
+            expect(instance.id).toEqual('abcd-efgh-ijkl-mnop-qrst');
+
+            // @ts-ignore Testing unexpected value
+            expect(instance.uuid).toBeUndefined();
+        });
     });
 });

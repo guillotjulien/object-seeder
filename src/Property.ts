@@ -50,7 +50,7 @@ export function Property(): Function;
  * This decorator, used on a class property, retrieve the name and type of the
  * property and add them to the class metadata.
  */
-export function Property(typeOrOption?: (() => Function) | PropertyOptions, options?: PropertyOptions): Function {
+export function Property(typeOrOptions?: (() => Function) | PropertyOptions, options?: PropertyOptions): Function {
     return (target: Record<string, any>, property: string): void => {
         const reflectedType = Reflect.getMetadata('design:type', target, property);
         const existingParameters = Reflect.getMetadata(PARAMETER_KEY, target) || {};
@@ -59,10 +59,12 @@ export function Property(typeOrOption?: (() => Function) | PropertyOptions, opti
             PARAMETER_KEY,
             {
                 ...existingParameters,
-                [property]: {
+                [typeof typeOrOptions === 'object' ? (typeOrOptions.name ? typeOrOptions.name : property) : property]: {
+                    realName: property,
                     // Workaround for this issue: https://github.com/microsoft/TypeScript/issues/4521
                     reflectedType: reflectedType || Object,
-                    providedType: typeOrOption,
+                    providedType: typeof typeOrOptions === 'function' ? typeOrOptions : undefined,
+                    options: typeof typeOrOptions === 'object' ? typeOrOptions : options,
                 },
             },
             target,

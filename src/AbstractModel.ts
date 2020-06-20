@@ -16,7 +16,7 @@ export abstract class AbstractModel<T> {
      *
      * @throws When provided data is not an object
      */
-    constructor(data?: RecursivePartial<T>) {
+    constructor(data?: RecursivePartial<T> & GenericKey) {
         const properties = this.getProperties();
 
         // Nothing to do if there is no data or no properties defined
@@ -31,10 +31,10 @@ export abstract class AbstractModel<T> {
         for (const key in data) {
             if (properties.hasOwnProperty(key)) {
                 const value = data[key];
-                const type = properties[key];
+                const metadata = properties[key];
 
-                Object.defineProperty(this, key, {
-                    value: this.transformValue(value, type),
+                Object.defineProperty(this, metadata.realName, {
+                    value: this.transformValue(value, metadata),
                     configurable: true,
                     enumerable: true,
                     writable: true,
@@ -58,15 +58,15 @@ export abstract class AbstractModel<T> {
      * Otherwise, an object matching type will be returned.
      *
      * @param value Value to transform
-     * @param type Desired type for cast
+     * @param metadata Desired type for cast
      *
      * @throws Error when no value was provided
      * @throws Error when no cast type was provided
      *
      * @returns converted value
      */
-    private transformValue(value: any, type: PropertyMetadata): any {
-        let { reflectedType, providedType } = type;
+    private transformValue(value: any, metadata: PropertyMetadata): any {
+        let { reflectedType, providedType } = metadata;
         const primitiveTypes = ['Number', 'String', 'Boolean'];
 
         // We want to keep falsy values
@@ -74,7 +74,7 @@ export abstract class AbstractModel<T> {
             return;
         }
 
-        if (!type) {
+        if (!metadata) {
             throw new Error(UNDEFINED_TYPE_ERROR);
         }
 
@@ -114,6 +114,10 @@ export abstract class AbstractModel<T> {
 
 type RecursivePartial<T> = {
     [P in keyof T]?: RecursivePartial<T[P]>;
+};
+
+type GenericKey = {
+    [key: string]: any;
 };
 
 type ObjectKeyMetadata = {
