@@ -150,7 +150,7 @@ describe('AbstractModel', () => {
                     {
                         id: 1,
                         name: 'some class 1',
-                        // @ts-ignore
+                        // @ts-ignore Testing unexpected value
                         invalid: 'test',
                     },
                     {
@@ -160,6 +160,7 @@ describe('AbstractModel', () => {
                 ],
             });
 
+            // @ts-ignore Testing unexpected value
             expect(instance.someClasses[0].invalid).toBeUndefined();
         });
     });
