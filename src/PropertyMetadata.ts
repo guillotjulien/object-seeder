@@ -1,8 +1,11 @@
+import { PropertyOptions } from './PropertyOptions';
+
 /**
- * PropertyType describe the information about the type of the property that
- * have been obtained with the Property decorator.
+ * PropertyMetadata describe the information about the type of the property that
+ * have been obtained with the Property decorator and the options that have been
+ * supplied.
  */
-export interface PropertyType {
+export interface PropertyMetadata {
     /**
      * The type that was obtained through reflection. For primitive types
      * (except null and undefined), this is enough to properly cast the value.
@@ -17,4 +20,9 @@ export interface PropertyType {
      * example.
      */
     providedType?: any;
+
+    /**
+     * options used to fine tune behavior of Property decorator.
+     */
+    options?: PropertyOptions;
 }

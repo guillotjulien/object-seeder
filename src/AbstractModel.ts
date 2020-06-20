@@ -1,5 +1,5 @@
 import { PARAMETER_KEY } from './Property';
-import { PropertyType } from './PropertyType';
+import { PropertyMetadata } from './PropertyMetadata';
 
 export const INVALID_TYPE_ERROR = 'Provided data must be of object type.';
 export const UNDEFINED_TYPE_ERROR = 'Cannot convert value to undefined type.';
@@ -65,7 +65,7 @@ export abstract class AbstractModel<T> {
      *
      * @returns converted value
      */
-    private transformValue(value: any, type: PropertyType): any {
+    private transformValue(value: any, type: PropertyMetadata): any {
         let { reflectedType, providedType } = type;
         const primitiveTypes = ['Number', 'String', 'Boolean'];
 
@@ -117,5 +117,5 @@ type RecursivePartial<T> = {
 };
 
 type ObjectKeyMetadata = {
-    [key: string]: PropertyType;
+    [key: string]: PropertyMetadata;
 };
