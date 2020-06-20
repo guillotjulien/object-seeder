@@ -22,3 +22,6 @@ examples
 .prettierrc
 jest.config.json
 tsconfig.json
+tsconfig.build.json
+*.tgz
+.github
