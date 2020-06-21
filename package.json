@@ -20,8 +20,8 @@
         "seed"
     ],
     "scripts": {
-        "build": "rm -r dist && tsc -p tsconfig.build.json",
-        "prepare": "rm -r dist && tsc -p tsconfig.build.json",
+        "build": "rm -r dist || true && tsc -p tsconfig.build.json",
+        "prepare": "rm -r dist || true && tsc -p tsconfig.build.json",
         "format:all": "prettier --write src/.",
         "lint": "eslint 'src/**/*.ts'",
         "lint:fix": "eslint --fix 'src/**/*.ts'",
