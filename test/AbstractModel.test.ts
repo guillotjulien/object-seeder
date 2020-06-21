@@ -183,7 +183,7 @@ describe('AbstractModel', () => {
         });
 
         it('Should not cast received value when option "ignoreCast" is enabled', () => {
-            class TestCustomName extends AbstractModel<TestCustomName> {
+            class TestIgnoreCast extends AbstractModel<TestIgnoreCast> {
                 @Property({
                     name: 'uuid',
                     ignoreCast: true,
@@ -191,11 +191,46 @@ describe('AbstractModel', () => {
                 public id: any;
             }
 
-            const instance = new TestCustomName({
+            const instance = new TestIgnoreCast({
                 uuid: 'abcd-efgh-ijkl-mnop-qrst',
             });
 
             expect(instance.id).toEqual('abcd-efgh-ijkl-mnop-qrst');
+        });
+    });
+
+    describe('getMetadata', () => {
+        it('Should return metadata of exposed properties', () => {
+            class TestExposedProperties extends AbstractModel<TestExposedProperties> {
+                @Property({
+                    expose: true,
+                })
+                public id: string;
+            }
+
+            expect(new TestExposedProperties().getMetadata()).toEqual({
+                id: {
+                    reflectedType: String,
+                    providedType: undefined,
+                },
+            });
+        });
+
+        it('Should not return metadata for non-exposed properties', () => {
+            class TestExposedProperties extends AbstractModel<TestExposedProperties> {
+                @Property()
+                public id: string;
+            }
+
+            expect(new TestExposedProperties().getMetadata()).toEqual({});
+        });
+
+        it('Should not return metadata for non-decorated properties', () => {
+            class TestExposedProperties extends AbstractModel<TestExposedProperties> {
+                public id: string;
+            }
+
+            expect(new TestExposedProperties().getMetadata()).toEqual({});
         });
     });
 });

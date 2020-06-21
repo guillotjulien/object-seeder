@@ -1,5 +1,6 @@
 import { PARAMETER_KEY } from './Property';
 import { PropertyMetadata } from './PropertyMetadata';
+import { ExposedPropertyMetadata } from './ExposedPropertyMetadata';
 
 export const INVALID_TYPE_ERROR = 'Provided data must be of object type.';
 export const UNDEFINED_TYPE_ERROR = 'Cannot convert value to undefined type.';
@@ -46,6 +47,34 @@ export abstract class AbstractModel<T> {
                 });
             }
         }
+    }
+
+    /**
+     * Get exposed properties and their type. This only works for properties
+     * that have been decorated with the @Property() decorator.
+     *
+     * @returns An array containing metadata of exposed properties.
+     */
+    public getMetadata(): ObjectMetadata {
+        const properties = this.getProperties();
+        const exposedProperties = {};
+
+        for (const key in properties) {
+            if (properties.hasOwnProperty(key)) {
+                const element = properties[key];
+
+                if (element.options && element.options.expose) {
+                    Object.assign(exposedProperties, {
+                        [key]: {
+                            reflectedType: element.reflectedType,
+                            providedType: element.providedType,
+                        },
+                    });
+                }
+            }
+        }
+
+        return Object.assign({}, exposedProperties);
     }
 
     /**
@@ -133,4 +162,8 @@ type GenericKey = {
 
 type ObjectKeyMetadata = {
     [key: string]: PropertyMetadata;
+};
+
+type ObjectMetadata = {
+    [key: string]: ExposedPropertyMetadata;
 };
