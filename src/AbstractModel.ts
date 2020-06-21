@@ -3,6 +3,7 @@ import { PropertyMetadata } from './PropertyMetadata';
 
 export const INVALID_TYPE_ERROR = 'Provided data must be of object type.';
 export const UNDEFINED_TYPE_ERROR = 'Cannot convert value to undefined type.';
+export const UNDEFINED_METADATA_ERROR = 'Cannot convert value due to lack of property metadata.';
 
 /**
  * Base model to extends when creating a new model. This class provides the
@@ -14,7 +15,7 @@ export abstract class AbstractModel<T> {
      *
      * @param data Data to populate model with
      *
-     * @throws When provided data is not an object
+     * @throws Provided data is not an object
      */
     constructor(data?: RecursivePartial<T> & GenericKey) {
         const properties = this.getProperties();
@@ -54,14 +55,16 @@ export abstract class AbstractModel<T> {
     }
 
     /**
-     * Transform value to the appropriate type. If it's a primitive type it will only be casted to this value.
-     * Otherwise, an object matching type will be returned.
+     * Transform value to the appropriate type. If it's a primitive type it
+     * will only be casted to this value. Otherwise, an object matching type
+     * will be returned.
      *
      * @param value Value to transform
-     * @param metadata Desired type for cast
+     * @param metadata Information retrieved about the property
      *
-     * @throws Error when no value was provided
-     * @throws Error when no cast type was provided
+     * @throws No value was provided
+     * @throws No metadata were provided
+     * @throws No cast type was provided
      *
      * @returns converted value
      */
@@ -75,6 +78,10 @@ export abstract class AbstractModel<T> {
         }
 
         if (!metadata) {
+            throw new Error(UNDEFINED_METADATA_ERROR);
+        }
+
+        if (!reflectedType && !providedType) {
             throw new Error(UNDEFINED_TYPE_ERROR);
         }
 
