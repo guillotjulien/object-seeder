@@ -30,6 +30,7 @@ describe('AbstractModel', () => {
                 date: new Date(),
                 someClasses: [],
                 someClass: {},
+                someClassesNoProvidedType: [],
             });
 
             expect(typeof test.string).toEqual('string');
@@ -39,6 +40,7 @@ describe('AbstractModel', () => {
             expect(test.date).toBeInstanceOf(Date);
             expect(Array.isArray(test.someClasses)).toBeTruthy();
             expect(test.someClass).toBeInstanceOf(SomeClass);
+            expect(Array.isArray(test.someClassesNoProvidedType)).toBeTruthy();
         });
 
         it('Should only seed the decorated properties of model', () => {
@@ -134,10 +136,6 @@ describe('AbstractModel', () => {
                         id: 1,
                         name: 'some class 1',
                     },
-                    {
-                        id: 2,
-                        name: 'some class 2',
-                    },
                 ],
             });
 
@@ -153,15 +151,27 @@ describe('AbstractModel', () => {
                         // @ts-ignore Testing unexpected value
                         invalid: 'test',
                     },
-                    {
-                        id: 2,
-                        name: 'some class 2',
-                    },
                 ],
             });
 
             // @ts-ignore Testing unexpected value
             expect(instance.someClasses[0].invalid).toBeUndefined();
+        });
+
+        it('Should create an array of objects given a decorated property with no type function', () => {
+            const instance = new TestTypes({
+                someClassesNoProvidedType: [
+                    {
+                        id: 1,
+                        name: 'some class 1',
+                        // @ts-ignore Testing unexpected value
+                        invalid: 'test',
+                    },
+                ],
+            });
+
+            // @ts-ignore Testing unexpected value
+            expect(instance.someClassesNoProvidedType[0].invalid).toBeDefined();
         });
 
         it('Should seed property from the key that have been specified with option name', () => {

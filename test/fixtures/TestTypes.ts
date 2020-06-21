@@ -25,4 +25,7 @@ export class TestTypes extends AbstractModel<TestTypes> {
 
     @Property()
     public someClass: SomeClass;
+
+    @Property()
+    public someClassesNoProvidedType: SomeClass[];
 }
