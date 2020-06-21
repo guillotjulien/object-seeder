@@ -31,11 +31,15 @@ export abstract class AbstractModel<T> {
 
         for (const key in data) {
             if (properties.hasOwnProperty(key)) {
-                const value = data[key];
+                let value = data[key];
                 const metadata = properties[key];
 
+                if (!metadata || !metadata.options || !metadata.options.ignoreCast) {
+                    value = this.transformValue(value, metadata);
+                }
+
                 Object.defineProperty(this, metadata.realName, {
-                    value: this.transformValue(value, metadata),
+                    value: value,
                     configurable: true,
                     enumerable: true,
                     writable: true,

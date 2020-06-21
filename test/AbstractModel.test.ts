@@ -181,5 +181,21 @@ describe('AbstractModel', () => {
             // @ts-ignore Testing unexpected value
             expect(instance.uuid).toBeUndefined();
         });
+
+        it('Should not cast received value when option "ignoreCast" is enabled', () => {
+            class TestCustomName extends AbstractModel<TestCustomName> {
+                @Property({
+                    name: 'uuid',
+                    ignoreCast: true,
+                })
+                public id: any;
+            }
+
+            const instance = new TestCustomName({
+                uuid: 'abcd-efgh-ijkl-mnop-qrst',
+            });
+
+            expect(instance.id).toEqual('abcd-efgh-ijkl-mnop-qrst');
+        });
     });
 });
