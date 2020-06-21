@@ -3,6 +3,7 @@
     "compilerOptions": {
         "declaration": true,
         "declarationDir": "dist",
+        "sourceMap": false,
         "types": [
             "reflect-metadata"
         ]
