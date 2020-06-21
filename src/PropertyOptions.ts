@@ -27,4 +27,9 @@ export interface PropertyOptions {
      * By default, received values will always be cast.
      */
     ignoreCast?: boolean;
+
+    /**
+     * If true, property metadata will be returned by getMetadata method.
+     */
+    expose?: boolean;
 }

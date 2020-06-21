@@ -120,13 +120,14 @@ const user = new User({
 ## TODO
 
 - [ ] Optionnal automatic conversion from snake_Case to camelCase
-- [ ] Provide a custom name as a parameter for customized seeding
+- [x] Provide a custom name as a parameter for customized seeding
 - [ ] Replace AbstractModel by another decorator
 - [ ] Add custom example (select options based on model properties)
 - [ ] Contributor guidelines
     - [ ] Branch naming rules
     - [ ] Commit naming rules
     - [ ] Code of conduct
+- [ ] Provide documentation and examples for @Property options
 
 ## Contributing
 
