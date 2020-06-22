@@ -1,6 +1,6 @@
 import { PARAMETER_KEY } from './Property';
-import { PropertyMetadata } from './PropertyMetadata';
 import { ExposedPropertyMetadata } from './ExposedPropertyMetadata';
+import { PropertyOptions } from './PropertyOptions';
 
 export const INVALID_TYPE_ERROR = 'Provided data must be of object type.';
 export const UNDEFINED_TYPE_ERROR = 'Cannot convert value to undefined type.';
@@ -150,6 +150,25 @@ export abstract class AbstractModel<T> {
             Object.prototype.toString.call(value) === '[object Object]'
         );
     }
+}
+
+/**
+ * PropertyMetadata describe the information about the type of the property that
+ * have been obtained with the Property decorator and the options that have been
+ * supplied.
+ */
+interface PropertyMetadata extends ExposedPropertyMetadata {
+    /**
+     * Real name of the property. This is used when user provide a custom name
+     * for the property in the options when property name in the data source
+     * differ from the one in the model.
+     */
+    readonly realName: string;
+
+    /**
+     * options used to fine tune behavior of Property decorator.
+     */
+    readonly options?: PropertyOptions;
 }
 
 type RecursivePartial<T> = {
