@@ -242,5 +242,22 @@ describe('AbstractModel', () => {
 
             expect(new TestExposedProperties().getMetadata()).toEqual({});
         });
+
+        it('Should return metadata of exposed properties with their real name', () => {
+            class TestExposedProperties extends AbstractModel<TestExposedProperties> {
+                @Property({
+                    name: 'uuid',
+                    expose: true,
+                })
+                public id: string;
+            }
+
+            expect(new TestExposedProperties().getMetadata()).toEqual({
+                id: {
+                    reflectedType: String,
+                    providedType: undefined,
+                },
+            });
+        });
     });
 });

@@ -65,7 +65,7 @@ export abstract class AbstractModel<T> {
 
                 if (element.options && element.options.expose) {
                     Object.assign(exposedProperties, {
-                        [key]: {
+                        [element.realName]: {
                             reflectedType: element.reflectedType,
                             providedType: element.providedType,
                         },
