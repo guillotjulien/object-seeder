@@ -11,12 +11,6 @@ export interface PropertyOptions {
     name?: string;
 
     /**
-     * If true, the data source property name will be converted to camel
-     * case.
-     */
-    camelCase?: boolean;
-
-    /**
      * If true, the reflected / provided type will not be used, and the value
      * will be returned as received.
      *
