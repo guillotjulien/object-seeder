@@ -6,7 +6,7 @@
 [![DeepScan grade](https://deepscan.io/api/teams/8551/projects/10758/branches/153036/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=8551&pid=10758&bid=153036)
 
 Object Seeder is a set of two utils aiming to make model seeding efficient and easy again using the power of Typescript.
-No need to have these ugly static methods in your models, and the bugs that comes with that.
+Your models will be used to determine where the data coming from the data source should be stored, without maintaining static mappings.
 
 With Object Seeder, your models look like this:
 ``` typescript
@@ -25,7 +25,7 @@ export class User extends AbstractModel<User> {
     @Property()
     public age: number;
 
-    @Property()
+    @Property(() => Role)
     public role: Role;
 }
 ```
@@ -81,8 +81,9 @@ Make sure you have the following settings enabled in your `tsconfig.json`
 
 ## Quick Start
 
-This package only provide two things: the AbstractModel, and the decorator Property. When implementing it in your models
-you only need to extends the AbstactModel and decorate your properties with `@Property()`.
+This package only provide two things: the AbstractModel, and the decorator
+Property. When implementing it in your models you only need to extends the
+AbstractModel and decorates your properties with `@Property()`.
 
 ``` typescript
 import { AbstractModel, Property } from 'object-seeder';
@@ -118,11 +119,12 @@ const user = new User({
 
 ## Handling Arrays and Relationships between classes
 
-When dealing with arrays and relationships, the preferred way is to provide a
-function that return the relation class. While not mandatory, it helps the
-`AbstractModel` to provide type hints and seeds our models without adding non
-expected properties, which would otherwise be impossible due to language
-specifics.
+When dealing with arrays and relationships, the preferred way is to provides a
+function that returns the relation class. While not mandatory, it helps the
+AbstractModel to seeds our models without adding non expected properties, which
+would otherwise be impossible due to language specifics. If not provided, the
+fallback will be a generic object, and as such, any property can be seeded in
+the model.
 
 ``` typescript
 import { AbstractModel, Property } from 'object-seeder';
@@ -150,7 +152,7 @@ export class User extends AbstractModel<User> {
 
 ## Retrieving Class Metadata
 
-Properties that have been exposed can be retrieved using the method `getMetadata()`.
+Exposed properties can be retrieved using the method `getMetadata()`.
 This method return an array of metadata about the exposed properties such as the
 reflected type and the type that have been directly provided to the decorator.
 
@@ -171,11 +173,15 @@ console.log(user.getMetadata()); // [ id: { reflectedType: undefined, providedTy
 
 ## Decorator Options
 
-Those options can be provided to `@Property` to fine tune its behavior.
+Those options can be provided to the `@Property` decorator to fine tune its
+behavior.
 
 ### name
 
-[DESCRIPTION]
+The name option is to be used when the name of the property in the data source
+(e.g. database) differ from the one you want to use in your model. Provided with
+the name of the property in the data source, it will automatically associate the
+data with its property in the model.
 
 ``` typescript
 import { AbstractModel, Property } from 'object-seeder';
@@ -196,7 +202,13 @@ console.log(user.id); // 1
 
 ### ignoreCast
 
-[DESCRIPTION]
+If true, the reflected / provided type will not be used, and the value will be
+returned as received.
+
+This is particularly useful when the data type is `any` because the reflected
+type in this case will be `Object` which is not always what we want.
+
+By default, received values will always be cast.
 
 ``` typescript
 import { AbstractModel, Property } from 'object-seeder';
@@ -217,7 +229,8 @@ console.log(user.id); // 'very-unique-id'
 
 ### expose
 
-[DESCRIPTION]
+If true, property metadata will be returned by getMetadata method. By default,
+no property metadata are exposed.
 
 ``` typescript
 import { AbstractModel, Property } from 'object-seeder';
