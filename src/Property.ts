@@ -1,14 +1,14 @@
 import { PropertyOptions } from './PropertyOptions';
 
 /**
- * Key used to register type metadata in the class instance at runtime.
+ * Key used to registers type metadata in the class instance at runtime.
  *
  * @internal
  */
 export const PARAMETER_KEY = 'model:properties';
 
 /**
- * This decorator, used on a class property, retrieve the name and type of the
+ * This decorator, used on a class property, retrieves the name and type of the
  * property and add them to the class metadata.
  *
  * @param type Type function used to define a custom type. This parameter is used
@@ -47,7 +47,7 @@ export function Property(options: PropertyOptions): Function;
 export function Property(): Function;
 
 /**
- * This decorator, used on a class property, retrieve the name and type of the
+ * This decorator, used on a class property, retrieves the name and type of the
  * property and add them to the class metadata.
  */
 export function Property(typeOrOptions?: (() => Function) | PropertyOptions, options?: PropertyOptions): Function {

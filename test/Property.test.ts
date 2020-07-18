@@ -1,5 +1,4 @@
 import { PARAMETER_KEY, Property } from '../src';
-
 import { User } from './fixtures/circular-reference/user';
 import { UserInfo } from './fixtures/circular-reference/user-info';
 import { UserInfoTypeFunction } from './fixtures/circular-reference/user-info-type-function';
