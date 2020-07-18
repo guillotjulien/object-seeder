@@ -24,3 +24,7 @@
 
 - Removed `reflect-metadata` as a direct dependency
 - Improved error handling
+
+## Version 1.2.1 (2020-7-18)
+
+Fixing invalid build published

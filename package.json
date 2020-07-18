@@ -1,6 +1,6 @@
 {
     "name": "object-seeder",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Tiny utils for hassle free automatic object seeding",
     "author": "Julien Guillot",
     "license": "MIT",
