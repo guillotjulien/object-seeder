@@ -8,3 +8,19 @@
 ### Bug fixes
 
 - Fixed import path resolution
+
+## Version 1.2.0 (2020-7-18)
+
+### Major Changes
+
+- Improved seeding when dealing with arrays and circular references
+- Added options to `@Property()` decorator
+    - name
+    - ignoreCast
+    - expose
+- Added method `getMetadata` to access exposed properties metadata
+
+### Miscellaneous
+
+- Removed `reflect-metadata` as a direct dependency
+- Improved error handling

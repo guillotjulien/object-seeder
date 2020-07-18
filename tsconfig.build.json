@@ -2,7 +2,11 @@
     "extends": "./tsconfig.json",
     "compilerOptions": {
         "declaration": true,
-        "declarationDir": "dist"
+        "declarationDir": "dist",
+        "sourceMap": false,
+        "types": [
+            "reflect-metadata"
+        ]
     },
     "exclude": [
         "dist",

@@ -1,11 +1,14 @@
-import 'reflect-metadata';
+import { PARAMETER_KEY } from './Property';
+import { ExposedPropertyMetadata } from './ExposedPropertyMetadata';
+import { PropertyOptions } from './PropertyOptions';
 
 export const INVALID_TYPE_ERROR = 'Provided data must be of object type.';
 export const UNDEFINED_TYPE_ERROR = 'Cannot convert value to undefined type.';
+export const UNDEFINED_METADATA_ERROR = 'Cannot convert value due to lack of property metadata.';
 
 /**
  * Base model to extends when creating a new model. This class provides the
- * mecanisme for automatic object seeding.
+ * mechanism for automatic object seeding.
  */
 export abstract class AbstractModel<T> {
     /**
@@ -13,9 +16,9 @@ export abstract class AbstractModel<T> {
      *
      * @param data Data to populate model with
      *
-     * @throws When provided data is not an object
+     * @throws Provided data is not an object
      */
-    constructor(data?: RecursivePartial<T>) {
+    constructor(data?: RecursivePartial<T> & GenericKey) {
         const properties = this.getProperties();
 
         // Nothing to do if there is no data or no properties defined
@@ -29,11 +32,15 @@ export abstract class AbstractModel<T> {
 
         for (const key in data) {
             if (properties.hasOwnProperty(key)) {
-                const value = data[key];
-                const type = properties[key];
+                let value = data[key];
+                const metadata = properties[key];
 
-                Object.defineProperty(this, key, {
-                    value: this.transformValue(value, type),
+                if (!metadata || !metadata.options || !metadata.options.ignoreCast) {
+                    value = this.transformValue(value, metadata);
+                }
+
+                Object.defineProperty(this, metadata.realName, {
+                    value: value,
                     configurable: true,
                     enumerable: true,
                     writable: true,
@@ -43,30 +50,59 @@ export abstract class AbstractModel<T> {
     }
 
     /**
-     * Get all the properties and their type. This only works for properties
+     * Get exposed properties and their type. This only works for properties
      * that have been decorated with the @Property() decorator.
      *
-     * FIXME: replace any by interface
-     *
-     * @returns An array containing all properties with their type.
+     * @returns An array containing metadata of exposed properties.
      */
-    private getProperties(): any {
-        return Reflect.getMetadata('model:properties', this);
+    public getMetadata(): ObjectMetadata {
+        const properties = this.getProperties();
+        const exposedProperties = {};
+
+        for (const key in properties) {
+            if (properties.hasOwnProperty(key)) {
+                const element = properties[key];
+
+                if (element.options && element.options.expose) {
+                    Object.assign(exposedProperties, {
+                        [element.realName]: {
+                            reflectedType: element.reflectedType,
+                            providedType: element.providedType,
+                        },
+                    });
+                }
+            }
+        }
+
+        return Object.assign({}, exposedProperties);
     }
 
     /**
-     * Transform value to the appropriate type. If it's a primitive type it will only be casted to this value.
-     * Otherwise, an object matching type will be returned.
+     * Get all the properties and their type. This only works for properties
+     * that have been decorated with the @Property() decorator.
+     *
+     * @returns An array containing all properties with their type.
+     */
+    private getProperties(): ObjectKeyMetadata {
+        return Reflect.getMetadata(PARAMETER_KEY, this);
+    }
+
+    /**
+     * Transform value to the appropriate type. If it's a primitive type it
+     * will only be casted to this value. Otherwise, an object matching type
+     * will be returned.
      *
      * @param value Value to transform
-     * @param type Desired type for cast
+     * @param metadata Information retrieved about the property
      *
-     * @throws Error when no value was provided
-     * @throws Error when no cast type was provided
+     * @throws No value was provided
+     * @throws No metadata were provided
+     * @throws No cast type was provided
      *
      * @returns converted value
      */
-    private transformValue(value: any, type: any): any {
+    private transformValue(value: any, metadata: PropertyMetadata): any {
+        let { reflectedType, providedType } = metadata;
         const primitiveTypes = ['Number', 'String', 'Boolean'];
 
         // We want to keep falsy values
@@ -74,17 +110,36 @@ export abstract class AbstractModel<T> {
             return;
         }
 
-        if (!type) {
+        if (!metadata) {
+            throw new Error(UNDEFINED_METADATA_ERROR);
+        }
+
+        if (!reflectedType && !providedType) {
             throw new Error(UNDEFINED_TYPE_ERROR);
         }
 
-        if (primitiveTypes.indexOf(type.name) >= 0) {
-            return type(value);
-        } else if (type.name === 'Array' && Array.isArray(value)) {
+        if (primitiveTypes.indexOf(reflectedType.name) >= 0) {
+            return reflectedType(value);
+        }
+
+        if (reflectedType.name === 'Array' && Array.isArray(value)) {
+            if (providedType) {
+                reflectedType = providedType();
+
+                return value.map((element) => new reflectedType(element));
+            }
+
+            // Fallback, unwanted properties can be included in the array
             return Array.from(value);
         }
 
-        return new type(value);
+        // When type was provided as an arrow function, the type is obtained at
+        // runtime vs at initialization.
+        if (providedType && !providedType.name) {
+            reflectedType = providedType();
+        }
+
+        return new reflectedType(value);
     }
 
     private isObject(value: any): boolean {
@@ -97,6 +152,37 @@ export abstract class AbstractModel<T> {
     }
 }
 
+/**
+ * PropertyMetadata describe the information about the type of the property that
+ * have been obtained with the Property decorator and the options that have been
+ * supplied.
+ */
+interface PropertyMetadata extends ExposedPropertyMetadata {
+    /**
+     * Real name of the property. This is used when user provide a custom name
+     * for the property in the options when property name in the data source
+     * differ from the one in the model.
+     */
+    readonly realName: string;
+
+    /**
+     * options used to fine tune behavior of Property decorator.
+     */
+    readonly options?: PropertyOptions;
+}
+
 type RecursivePartial<T> = {
     [P in keyof T]?: RecursivePartial<T[P]>;
+};
+
+type GenericKey = {
+    [key: string]: any;
+};
+
+type ObjectKeyMetadata = {
+    [key: string]: PropertyMetadata;
+};
+
+type ObjectMetadata = {
+    [key: string]: ExposedPropertyMetadata;
 };

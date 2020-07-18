@@ -1,6 +1,8 @@
-import { AbstractModel } from "../../src/AbstractModel";
-import { SomeClass } from "./SomeClass";
-import { Property } from "../../src/Property";
+/* istanbul ignore file */
+
+import { AbstractModel } from '../../src/AbstractModel';
+import { SomeClass } from './SomeClass';
+import { Property } from '../../src/Property';
 
 export class TestTypes extends AbstractModel<TestTypes> {
     @Property()
@@ -13,14 +15,17 @@ export class TestTypes extends AbstractModel<TestTypes> {
     public number: number;
 
     @Property()
-    public object: Record<string, any>;
+    public object: any;
 
     @Property()
     public date: Date;
 
-    @Property()
+    @Property(() => SomeClass)
     public someClasses: SomeClass[];
 
     @Property()
     public someClass: SomeClass;
+
+    @Property()
+    public someClassesNoProvidedType: SomeClass[];
 }
