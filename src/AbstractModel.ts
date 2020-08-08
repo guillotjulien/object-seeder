@@ -4,7 +4,6 @@ import { PropertyOptions } from './PropertyOptions';
 
 export const INVALID_TYPE_ERROR = 'Provided data must be of object type.';
 export const UNDEFINED_TYPE_ERROR = 'Cannot convert value to undefined type.';
-export const UNDEFINED_METADATA_ERROR = 'Cannot convert value due to lack of property metadata.';
 
 /**
  * Base model to extends when creating a new model. This class provides the
@@ -35,7 +34,7 @@ export abstract class AbstractModel<T> {
                 let value = data[key];
                 const metadata = properties[key];
 
-                if (!metadata || !metadata.options || !metadata.options.ignoreCast) {
+                if (metadata && (!metadata.options || !metadata.options.ignoreCast)) {
                     value = this.transformValue(value, metadata);
                 }
 
@@ -96,23 +95,18 @@ export abstract class AbstractModel<T> {
      * @param metadata Information retrieved about the property
      *
      * @throws No value was provided
-     * @throws No metadata were provided
      * @throws No cast type was provided
      *
      * @returns converted value
      */
     private transformValue(value: any, metadata: PropertyMetadata): any {
-        let { reflectedType, providedType } = metadata;
-        const primitiveTypes = ['Number', 'String', 'Boolean'];
-
         // We want to keep falsy values
         if (value === undefined || value === null) {
             return;
         }
 
-        if (!metadata) {
-            throw new Error(UNDEFINED_METADATA_ERROR);
-        }
+        let { reflectedType, providedType } = metadata;
+        const primitiveTypes = ['Number', 'String', 'Boolean'];
 
         if (!reflectedType && !providedType) {
             throw new Error(UNDEFINED_TYPE_ERROR);
