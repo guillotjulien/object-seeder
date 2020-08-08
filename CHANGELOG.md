@@ -28,3 +28,9 @@
 ## Version 1.2.1 (2020-7-18)
 
 Fixing invalid build published
+
+## Version 1.2.2 (2020-8-8)
+
+### Bug fixes
+
+- Fixed insufficient null checking reported by Deepscan in abstract model
